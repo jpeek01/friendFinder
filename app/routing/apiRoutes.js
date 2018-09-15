@@ -8,7 +8,6 @@ module.exports = function(app){
 
     app.post('/api/friends', function(req,res){
         var friendScores = req.body.scores;
-        // var scores = [];
         var match = 0;
         var currentDifference = 0;
         var previousDifference = 0;
@@ -17,7 +16,7 @@ module.exports = function(app){
           for(let j=0; j < friendScores.length; j++){
             currentDifference += (Math.abs(parseInt(friends[i].scores[j]) - parseInt(friendScores[j])));
           }
-          
+
           if (currentDifference < previousDifference || previousDifference === 0) {
             previousDifference = currentDifference;
             currentDifference = 0;
