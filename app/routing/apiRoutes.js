@@ -8,26 +8,24 @@ module.exports = function(app){
 
     app.post('/api/friends', function(req,res){
         var friendScores = req.body.scores;
-        var scores = [];
+        // var scores = [];
         var match = 0;
-        var scoresDiff = 0;
-    
+        var currentDifference = 0;
+        var previousDifference = 0;
+
         for(let i = 0; i < friends.length; i++){
           for(let j=0; j < friendScores.length; j++){
-            scoresDiff += (Math.round(parseInt(friends[i].scores[j]) - parseInt(friendScores[j])));
+            currentDifference += (Math.abs(parseInt(friends[i].scores[j]) - parseInt(friendScores[j])));
           }
-
-          scores.push(scoresDiff);
-        }
-    
-        for(var i=0; i<scores.length; i++){
-          if(scores[i] <= scores[match]){
+          
+          if (currentDifference < previousDifference || previousDifference === 0) {
+            previousDifference = currentDifference;
+            currentDifference = 0;
             match = i;
           }
         }
     
-        var bff = friends[match];
-        res.json(bff);
+        res.json(friends[match]);
     
         friends.push(req.body);
     });
